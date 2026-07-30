@@ -28,7 +28,7 @@ body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:c
 .label{font-size:.82rem;color:#6e5a51}
 .layout{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;min-height:0}
 .letter,.photos{background:#fff;border:1px solid #ead7cc;border-radius:16px;padding:16px;overflow:auto;min-height:0}
-.letter{line-height:1.7;outline:none}
+.letter{line-height:1.7}
 .letter p{margin:0 0 12px}
 .signature{margin-top:16px;font-weight:700;color:var(--accent)}
 .photos{display:flex;flex-direction:column;gap:12px}
@@ -47,13 +47,13 @@ button.ghost{background:linear-gradient(135deg,#9aa3b2,#6b7280)}
 <div class="stage">
   <div class="header">
     <h1>Para Lua da minha vida.</h1>
-    <p>Uma carta em estilo envelope, romântica, moderna e editável.</p>
+    <p>Uma carta em estilo envelope, romântica, moderna e sem edição direta na página.</p>
   </div>
 
   <div class="envelopeWrap">
     <div class="envelope" id="env">
       <div class="flap" id="flap"></div>
-      <div class="paper" contenteditable="true" id="paper">
+      <div class="paper" id="paper">
         <div class="paperInner">
           <h2 class="title">Para Lua da minha vida.</h2>
           <div class="counter">
@@ -63,7 +63,7 @@ button.ghost{background:linear-gradient(135deg,#9aa3b2,#6b7280)}
             <div class="box"><div class="num" id="totalDays">0</div><div class="label">dias totais</div></div>
           </div>
           <div class="layout">
-            <section class="letter" id="letter" contenteditable="true">
+            <section class="letter">
               <p>Queria demonstrar meu amor por você através deste simples gesto.</p>
               <p>Te amar tem sido a minha maior alegria. Fazer você feliz enche meu coração de felicidade, mas te ver chorar me destrói por dentro.</p>
               <p>Sua luta por nós é imensa, e eu reconheço todo o seu esforço, sua dedicação e tudo o que você faz por nós. Amo saber que sou amado por você.</p>
@@ -72,13 +72,13 @@ button.ghost{background:linear-gradient(135deg,#9aa3b2,#6b7280)}
             </section>
             <aside class="photos" id="photos">
               <div class="slot">
-                <div class="placeholder">Foto 1<br>cole o link do Google Drive</div>
+                <div class="placeholder">Foto 1<br>cole o link do Google Drive no código</div>
               </div>
               <div class="slot">
-                <div class="placeholder">Foto 2<br>cole o link do Google Drive</div>
+                <div class="placeholder">Foto 2<br>cole o link do Google Drive no código</div>
               </div>
               <div class="slot">
-                <div class="placeholder">Foto 3<br>cole o link do Google Drive</div>
+                <div class="placeholder">Foto 3<br>cole o link do Google Drive no código</div>
               </div>
             </aside>
           </div>
@@ -89,14 +89,23 @@ button.ghost{background:linear-gradient(135deg,#9aa3b2,#6b7280)}
 
   <div class="controls">
     <button onclick="toggleEnvelope()">Abrir / Fechar envelope</button>
-    <button class="secondary" onclick="addPhotoByLink()">Adicionar foto por link</button>
-    <button class="ghost" onclick="addEmptyPhoto()">Adicionar espaço vazio</button>
   </div>
-  <div class="note">Use links públicos e diretos de imagem do Google Drive. Você pode editar o texto clicando na carta.</div>
+  <div class="note">Tudo deve ser alterado apenas no código: texto, assinatura, data e links das fotos.</div>
 </div>
 
 <script>
 const start = new Date('2016-07-23T00:00:00');
+const photoLinks = [
+  '',
+  '',
+  ''
+];
+function normalizeDriveUrl(url){
+  const trimmed = (url || '').trim();
+  const idMatch = trimmed.match(//d/([a-zA-Z0-9_-]+)/) || trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if(idMatch) return `https://drive.google.com/uc?export=download&id=${idMatch[1]}`;
+  return trimmed;
+}
 function updateCounter(){
   const now = new Date();
   let y = now.getFullYear() - start.getFullYear();
@@ -113,40 +122,28 @@ function toggleEnvelope(){
   document.getElementById('env').classList.toggle('open');
   document.getElementById('flap').classList.toggle('open');
 }
-function normalizeDriveUrl(url){
-  const trimmed = url.trim();
-  const idMatch = trimmed.match(//d/([a-zA-Z0-9_-]+)/) || trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-  if(idMatch) return `https://drive.google.com/uc?export=download&id=${idMatch[1]}`;
-  return trimmed;
-}
-function createPhotoSlot(src){
-  const div = document.createElement('div');
-  div.className = 'slot';
-  if(src){
-    const img = document.createElement('img');
-    img.src = src;
-    img.alt = 'Foto';
-    div.appendChild(img);
-  } else {
-    const placeholder = document.createElement('div');
-    placeholder.className = 'placeholder';
-    placeholder.innerHTML = 'Espaço para foto<br>cole o link do Google Drive';
-    div.appendChild(placeholder);
-  }
-  return div;
-}
-function addPhotoByLink(){
-  const url = prompt('Cole o link da imagem do Google Drive:');
-  if(url === null) return;
+function renderPhotos(){
   const photos = document.getElementById('photos');
-  const slot = createPhotoSlot(url.trim() ? normalizeDriveUrl(url) : null);
-  photos.appendChild(slot);
-}
-function addEmptyPhoto(){
-  const photos = document.getElementById('photos');
-  photos.appendChild(createPhotoSlot(null));
+  photos.innerHTML = '';
+  photoLinks.forEach((link, idx) => {
+    const slot = document.createElement('div');
+    slot.className = 'slot';
+    if(link && link.trim()){
+      const img = document.createElement('img');
+      img.src = normalizeDriveUrl(link);
+      img.alt = `Foto ${idx + 1}`;
+      slot.appendChild(img);
+    } else {
+      const placeholder = document.createElement('div');
+      placeholder.className = 'placeholder';
+      placeholder.innerHTML = `Foto ${idx + 1}<br>defina o link no código`;
+      slot.appendChild(placeholder);
+    }
+    photos.appendChild(slot);
+  });
 }
 updateCounter();
+renderPhotos();
 setInterval(updateCounter, 60000);
 </script>
 </body>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para Lua da minha vida 🌙</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body{
+      min-height: 100vh;
+      background:#7a243a;
+      font-family:'Segoe UI', sans-serif;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+
+    .tela-inicial, .pagina {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .tela-inicial{
+      text-align:center;
+      color:#fffdf5;
+    }
+
+    .envelope{
+      width: 260px;
+      height: 180px;
+      margin: 0 auto 25px;
+      position: relative;
+      perspective: 800px;
+    }
+
+    .env-base{
+      width: 100%;
+      height: 100%;
+      background: #f3e8c6;
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    }
+
+    .env-flap{
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:50%;
+      background:#e6d3a1;
+      clip-path: polygon(0 0, 50% 100%, 100% 0);
+      transform-origin: top;
+      transition: transform .8s ease;
+      z-index:2;
+    }
+
+    .env-letter{
+      position:absolute;
+      inset:18px;
+      background:#fffdf5;
+      border-radius: 6px;
+      transform: translateY(70px);
+      transition: transform .8s ease;
+      z-index:1;
+      padding:18px;
+      color:#5c1a2b;
+      font-family: Georgia, serif;
+      font-size: 18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      line-height:1.4;
+    }
+
+    .envelope-aberto .env-flap{
+      transform: rotateX(180deg);
+    }
+
+    .envelope-aberto .env-letter{
+      transform: translateY(-5px);
+    }
+
+    .titulo-capa{
+      font-family: Georgia, serif;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .btn-abrir{
+      border:0;
+      background:#fffdf5;
+      color:#5c1a2b;
+      padding:14px 28px;
+      border-radius:999px;
+      font-size:18px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(0,0,0,.2);
+    }
+
+    .pagina{
+      display:none;
+      background:#fffdf5;
+      background-image: linear-gradient(#e0e0e0 1px, transparent 1px);
+      background-size: 100% 32px;
+      padding: 40px 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      color:#3a111c;
+    }
+
+    .titulo{
+      font-family: Georgia, serif;
+      font-size: 32px;
+      color: #5c1a2b;
+      margin-bottom: 35px;
+      line-height: 1.3;
+      text-align: center;
+    }
+
+    .moldura{
+      background: white;
+      padding: 12px;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    .fita{
+      position:absolute;
+      top:-8px;
+      right:-8px;
+      width:70px;
+      height:25px;
+      background:#f3e8c6;
+      transform:rotate(25deg);
+      opacity:.9;
+      z-index:10;
+    }
+
+    .carrossel{
+      display:flex;
+      width:300%;
+      animation: slide 12s infinite linear;
+    }
+
+    @keyframes slide {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-66.666%); }
+    }
+
+    .carrossel img{
+      width:33.333%;
+      border-radius:2px;
+      object-fit:cover;
+    }
+
+    .texto{
+      font-size: 18px;
+      line-height: 32px;
+      margin-bottom: 35px;
+    }
+
+    .contador-box{
+      background: rgba(255, 220, 230, 0.6);
+      border-radius: 12px;
+      padding: 25px 20px;
+      margin: 35px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contador-titulo{
+      font-family: Georgia, serif;
+      font-size: 28px;
+      color: #9c2752;
+      margin-bottom: 15px;
+    }
+
+    .contador-valor{
+      font-size: 17px;
+      color: #5c1a2b;
+      font-weight: 500;
+    }
+
+    .assinatura{
+      font-family: Georgia, serif;
+      font-size: 22px;
+      color: #5c1a2b;
+      text-align: center;
+      margin: 30px 0 25px;
+    }
+  </style>
+</head>
+<body>
+
+<audio id="musica" preload="auto" loop>
+  <source src="all_of_me.mp3" type="audio/mpeg">
+</audio>
+
+<div class="tela-inicial" id="capa">
+  <div class="titulo-capa">Para Lua da minha vida 🌙</div>
+
+  <div class="envelope" id="envelope">
+    <div class="env-base">
+      <div class="env-flap"></div>
+      <div class="env-letter">
+        Para Lua<br>da minha vida
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-abrir" id="btnAbrir">Abrir</button>
+</div>
+
+<div class="pagina" id="carta">
+  <div class="titulo">Para Lua da minha vida <br>🌙</div>
+
+  <div class="moldura">
+    <div class="fita"></div>
+    <div class="carrossel">
+      <img src="foto1.jpg" alt="Foto 1">
+      <img src="foto2.jpg" alt="Foto 2">
+      <img src="foto3.jpg" alt="Foto 3">
+    </div>
+  </div>
+
+  <div class="texto">
+    Quero demonstrar meu amor por você através deste simples gesto.<br><br>
+    Te amar tem sido a minha maior alegria. Fazer você feliz enche meu coração de felicidade, mas te ver chorar me destrói por dentro.<br><br>
+    Sua luta por nós é admirável, e eu reconheço todo o seu esforço, sua dedicação e tudo o que você faz por nós. Amo saber que sou amado por você.<br><br>
+    Obrigado por estar nessa batalha ao meu lado. Com você, tudo isso vale a pena.<br><br>
+    Eu te amo!
+  </div>
+
+  <div class="contador-box">
+    <div class="contador-titulo">Juntos há:</div>
+    <div class="contador-valor" id="contador"></div>
+  </div>
+
+  <div class="assinatura">Assinado: Seu Sol e Estrelas</div>
+</div>
+
+<script>
+const dataInicio = new Date(2016, 6, 25, 0, 0);
+const audio = document.getElementById('musica');
+const capa = document.getElementById('capa');
+const carta = document.getElementById('carta');
+const envelope = document.getElementById('envelope');
+const btnAbrir = document.getElementById('btnAbrir');
+
+function atualizarContador() {
+  const agora = new Date();
+  let diff = Math.floor((agora - dataInicio) / 1000);
+  const anos = Math.floor(diff / 31536000); diff %= 31536000;
+  const meses = Math.floor(diff / 2592000); diff %= 2592000;
+  const dias = Math.floor(diff / 86400); diff %= 86400;
+  const horas = Math.floor(diff / 3600); diff %= 3600;
+  const minutos = Math.floor(diff / 60);
+  const segundos = diff % 60;
+  document.getElementById('contador').innerHTML =
+    `${anos} anos, ${meses} meses, ${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos`;
+}
+
+function fadeInAudio(duration = 3000) {
+  audio.volume = 0;
+  audio.play().catch(() => {});
+  const steps = 60;
+  const stepTime = duration / steps;
+  let currentStep = 0;
+
+  const fade = setInterval(() => {
+    currentStep++;
+    audio.volume = Math.min(currentStep / steps, 1);
+    if (currentStep >= steps) clearInterval(fade);
+  }, stepTime);
+}
+
+function abrirCarta() {
+  envelope.classList.add('envelope-aberto');
+  fadeInAudio(3000);
+
+  setTimeout(() => {
+    capa.style.display = 'none';
+    carta.style.display = 'block';
+    atualizarContador();
+    setInterval(atualizarContador, 1000);
+  }, 700);
+}
+
+btnAbrir.addEventListener('click', abrirCarta);
+envelope.addEventListener('click', abrirCarta);
+</script>
+
+</body>
+</html>

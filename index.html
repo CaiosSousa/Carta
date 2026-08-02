@@ -114,7 +114,7 @@
 <body>
 
 <!-- ÁUDIO OCULTO, TAGS FECHADAS, FORA DA DIV PRINCIPAL PARA NÃO QUEBRAR NADA -->
-<audio id="musica" autoplay muted loop preload="auto" style="display: none;">
+<audio id="musica" preload="auto" loop>
     <source src="all_of_me.mp3" type="audio/mpeg">
 </audio>
 
@@ -167,14 +167,33 @@ atualizarContador();
 setInterval(atualizarContador, 1000);
 
 const audio = document.getElementById('musica');
-function iniciarSom() {
-    audio.muted = false;
-    audio.play().catch(() => {});
-    document.removeEventListener('click', iniciarSom);
-    document.removeEventListener('touchstart', iniciarSom);
+let tocando = false;
+
+function fadeInAudio(duration = 3000) {
+  audio.volume = 0;
+  audio.play().then(() => {
+    const steps = 60;
+    const stepTime = duration / steps;
+    let currentStep = 0;
+
+    const fade = setInterval(() => {
+      currentStep++;
+      audio.volume = Math.min(currentStep / steps, 1);
+      if (currentStep >= steps) clearInterval(fade);
+    }, stepTime);
+  }).catch(() => {});
 }
-document.addEventListener('click', iniciarSom);
-document.addEventListener('touchstart', iniciarSom);
+
+function iniciarSom() {
+  if (tocando) return;
+  tocando = true;
+  fadeInAudio(3000);
+  document.removeEventListener('click', iniciarSom);
+  document.removeEventListener('touchstart', iniciarSom);
+}
+
+document.addEventListener('click', iniciarSom, { once: true });
+document.addEventListener('touchstart', iniciarSom, { once: true });
 </script>
 
 </body>

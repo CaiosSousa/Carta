@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Lua da minha vida 🌙</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #7a243a;
+            padding: 20px 0;
+            font-family: 'Segoe UI', serif;
+        }
+        .pagina {
+            max-width: 480px;
+            width: 92%;
+            margin: 0 auto;
+            background: #fffdf5;
+            background-image: linear-gradient(#e0e0e0 1px, transparent 1px);
+            background-size: 100% 32px;
+            padding: 40px 30px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+        .titulo {
+            font-family: 'Georgia', cursive;
+            font-size: 32px;
+            color: #5c1a2b;
+            margin-bottom: 35px;
+            line-height: 1.3;
+            text-align: center;
+        }
+        .container-fotos { position: relative; margin-bottom: 40px; }
+        .moldura {
+            background: white;
+            padding: 12px;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .fita {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 70px;
+            height: 25px;
+            background: #f3e8c6;
+            transform: rotate(25deg);
+            opacity: 0.9;
+            z-index: 10;
+        }
+        .carrossel {
+            display: flex;
+            width: 300%;
+            animation: slide 12s infinite linear;
+        }
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-66.666%); }
+        }
+        .carrossel img {
+            width: 33.333%;
+            height: auto;
+            border-radius: 2px;
+            object-fit: cover;
+        }
+        .texto {
+            font-size: 18px;
+            line-height: 32px;
+            color: #3a111c;
+            margin-bottom: 35px;
+            text-align: left;
+        }
+        .contador-box {
+            background: rgba(255, 220, 230, 0.6);
+            border-radius: 12px;
+            padding: 25px 20px;
+            margin: 35px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .contador-box::before {
+            content: "❤ ❤ ♡ ❤ ♡ ❤";
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 100%;
+            font-size: 20px;
+            color: rgba(255,150,180,0.2);
+            letter-spacing: 8px;
+        }
+        .contador-titulo {
+            font-family: 'Georgia', cursive;
+            font-size: 28px;
+            color: #9c2752;
+            margin-bottom: 15px;
+        }
+        .contador-valor {
+            font-size: 17px;
+            color: #5c1a2b;
+            font-weight: 500;
+        }
+        .assinatura {
+            font-family: 'Georgia', cursive;
+            font-size: 22px;
+            color: #5c1a2b;
+            text-align: center;
+            margin: 30px 0 25px;
+        }
+        audio { width: 100%; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="pagina">
+        <div class="titulo">Para Lua da minha vida <br>🌙</div>
+
+        <div class="container-fotos">
+            <div class="moldura">
+                <div class="fita"></div>
+                <div class="carrossel">
+                    <img src="https://drive.google.com/uc?export=view&id=13uqLJtihSQT6M_ClpegCR_4WjV82riDG" alt="Foto 1">
+                    <img src="https://drive.google.com/uc?export=view&id=13uhwBnXbbMKGJVYRQIvde0M9iwEmEHWL" alt="Foto 2">
+                    <img src="https://drive.google.com/uc?export=view&id=1W79z0FsnOdtOJpX10qgu2QBVZJBAzhD2" alt="Foto 3">
+                </div>
+            </div>
+        </div>
+
+        <div class="texto">
+            Queria demonstrar meu amor por você através deste simples gesto.<br><br>
+            Te amar tem sido a minha maior alegria. Fazer você feliz enche meu coração de felicidade, mas te ver chorar me destrói por dentro.<br><br>
+            Sua luta por nós é admirável, e eu reconheço todo o seu esforço, sua dedicação e tudo o que você faz por nós. Amo saber que sou amado por você.<br><br>
+            Obrigado por estar nessa batalha ao meu lado. Com você, tudo isso vale a pena.<br><br>
+            Eu te amo!
+        </div>
+
+        <div class="contador-box">
+            <div class="contador-titulo">Juntos há:</div>
+            <div class="contador-valor" id="contador"></div>
+        </div>
+
+        <div class="assinatura">Assinado: Seu Sol e Estrelas</div>
+
+        <!-- Adicionei autoplay, muted e o script para iniciar no primeiro toque -->
+        <audio id="musica" controls autoplay muted loop>
+            <source src="https://drive.google.com/uc?export=download&id=1yR3QRFH07O0lMPoMc5E2YZldU9fR80u4" type="audio/mpeg">
+            Seu navegador não suporta áudio.
+        
+    </div>
+
+    <script>
+        // AJUSTE AQUI A DATA DE INÍCIO (mês começa em 0 = jan)
+        const dataInicio = new Date(2016, 6, 10, 14, 0);
+        function atualizarContador() {
+            const agora = new Date();
+            let diff = Math.floor((agora - dataInicio) / 1000);
+            const anos = Math.floor(diff / 31536000); diff %= 31536000;
+            const meses = Math.floor(diff / 2592000); diff %= 2592000;
+            const dias = Math.floor(diff / 86400); diff %= 86400;
+            const horas = Math.floor(diff / 3600); diff %= 3600;
+            const minutos = Math.floor(diff / 60);
+            const segundos = diff % 60;
+            document.getElementById('contador').innerHTML = 
+            `${anos} anos, ${meses} meses, ${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos`;
+        }
+        atualizarContador();
+        setInterval(atualizarContador, 1000);
+
+        // Inicia a música com som real no primeiro toque/clique
+        const audio = document.getElementById('musica');
+        function iniciarSom() {
+            audio.muted = false;
+            audio.play();
+            document.removeEventListener('click', iniciarSom);
+            document.removeEventListener('touchstart', iniciarSom);
+        }
+        document.addEventListener('click', iniciarSom);
+        document.addEventListener('touchstart', iniciarSom);
+    </script>
+</body>
+</html>

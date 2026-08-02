@@ -1,311 +1,304 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Para Lua da minha vida 🌙</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
+    /* Estilo geral */
+    :root{
+      --bg:#6f2031;
+      --accent:#f3e8c6;
+      --paper:#fffdf5;
+      --text:#5c1a2b;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
     body{
-      min-height: 100vh;
-      background:#7a243a;
-      font-family:'Segoe UI', sans-serif;
+      min-height:100vh;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:20px;
+      background:var(--bg);
+      font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial;
+      padding:24px;
+      color:var(--paper);
     }
 
-    .tela-inicial, .pagina {
-      width: 100%;
-      max-width: 480px;
+    /* Container */
+    .wrap{ width:100%; max-width:520px; text-align:center; }
+
+    /* Cabeçalho */
+    .headline{
+      font-family: "Georgia", serif;
+      color:var(--paper);
+      font-size:22px;
+      margin-bottom:20px;
+      opacity:.95;
+      letter-spacing:.4px;
     }
 
-    .tela-inicial{
-      text-align:center;
-      color:#fffdf5;
+    /* Envelope central */
+    .envelope-area{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:22px;
     }
 
     .envelope{
-      width: 260px;
-      height: 180px;
-      margin: 0 auto 25px;
-      position: relative;
-      perspective: 800px;
-      cursor: pointer;
+      width:280px;
+      height:180px;
+      position:relative;
+      perspective:900px;
+      cursor:pointer;
     }
 
+    /* base do envelope */
     .env-base{
-      width: 100%;
-      height: 100%;
-      background: #f3e8c6;
-      border-radius: 10px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,.25);
+      width:100%;
+      height:100%;
+      border-radius:12px;
+      background: linear-gradient(180deg, #f9f1d8 0%, #f1e3b9 100%);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.28);
+      position:relative;
+      overflow:visible;
     }
 
+    /* flap (tampa) */
     .env-flap{
       position:absolute;
       top:0;
       left:0;
       width:100%;
-      height:50%;
-      background:#e6d3a1;
+      height:56%;
+      transform-origin: top center;
+      transform: rotateX(0deg);
+      transition: transform 700ms cubic-bezier(.2,.9,.28,1);
+      z-index:5;
+      pointer-events:none;
+      /* desenho da dobra */
+      background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01));
       clip-path: polygon(0 0, 50% 100%, 100% 0);
-      transform-origin: top;
-      transition: transform .8s ease;
-      z-index:2;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
     }
 
-    .env-letter{
+    /* selo/decoração discreta no flap */
+    .env-seal{
       position:absolute;
-      inset:18px;
-      background:#fffdf5;
-      border-radius: 6px;
-      transform: translateY(70px);
-      transition: transform .8s ease;
-      z-index:1;
-      padding:18px;
-      color:#5c1a2b;
+      top:12%;
+      left:50%;
+      transform:translateX(-50%);
+      width:54px;
+      height:24px;
+      border-radius:14px;
+      background: rgba(92,26,43,0.06);
+      box-shadow: inset 0 -2px 0 rgba(0,0,0,0.03);
+    }
+
+    /* folha (papel) — inicialmente oculta dentro do envelope */
+    .letter{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%) translateY(70px);
+      width:86%;
+      height:76%;
+      background:var(--paper);
+      border-radius:8px;
+      box-shadow:0 10px 22px rgba(0,0,0,0.12);
+      opacity:0;
+      transition: transform 800ms cubic-bezier(.2,.9,.28,1), opacity 420ms ease;
+      z-index:2;
+      padding:28px;
+      color:var(--text);
       font-family: Georgia, serif;
-      font-size: 18px;
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:center;
-      text-align:center;
-      line-height:1.4;
+      text-align:left;
+      line-height:1.45;
+      pointer-events:none;
     }
 
-    .envelope-aberto .env-flap{
-      transform: rotateX(180deg);
+    /* quando envelope abre: flap vira e folha sobe + aparece */
+    .envelope.open .env-flap{ transform: rotateX(180deg); }
+    .envelope.open .letter{
+      transform: translateX(-50%) translateY(-12px);
+      opacity:1;
+      pointer-events:auto;
     }
 
-    .envelope-aberto .env-letter{
-      transform: translateY(-5px);
-    }
-
-    .titulo-capa{
-      font-family: Georgia, serif;
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
-
+    /* botão estilizado (serve como play/abrir) */
     .btn-abrir{
+      display:inline-block;
+      margin-top:12px;
+      background: var(--paper);
+      color:var(--text);
       border:0;
-      background:#fffdf5;
-      color:#5c1a2b;
-      padding:14px 28px;
+      padding:12px 28px;
       border-radius:999px;
-      font-size:18px;
       font-weight:700;
       cursor:pointer;
-      box-shadow:0 8px 18px rgba(0,0,0,.2);
-      transition: transform 0.2s ease;
+      box-shadow:0 10px 20px rgba(0,0,0,0.18);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+      font-size:16px;
     }
+    .btn-abrir:active{ transform: translateY(2px); box-shadow:0 6px 12px rgba(0,0,0,0.16); }
 
-    .btn-abrir:hover {
-      transform: scale(1.05);
-    }
-
+    /* após abrir, escondemos a tela inicial e mostramos a carta completa */
     .pagina{
       display:none;
-      background:#fffdf5;
-      background-image: linear-gradient(#e0e0e0 1px, transparent 1px);
-      background-size: 100% 32px;
-      padding: 40px 30px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
-      color:#3a111c;
+      margin-top:18px;
     }
 
-    .titulo{
-      font-family: Georgia, serif;
-      font-size: 32px;
-      color: #5c1a2b;
-      margin-bottom: 35px;
-      line-height: 1.3;
-      text-align: center;
-    }
-
-    .moldura{
-      background: white;
-      padding: 12px;
-      border-radius: 4px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 40px;
-    }
-
-    .fita{
-      position:absolute;
-      top:-8px;
-      right:-8px;
-      width:70px;
-      height:25px;
-      background:#f3e8c6;
-      transform:rotate(25deg);
-      opacity:.9;
-      z-index:10;
-    }
-
-    .carrossel{
-      display:flex;
-      width:300%;
-      animation: slide 12s infinite linear;
-    }
-
-    @keyframes slide {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-66.666%); }
-    }
-
-    .carrossel img{
-      width:33.333%;
-      border-radius:2px;
-      object-fit:cover;
-    }
-
-    .texto{
-      font-size: 18px;
-      line-height: 32px;
-      margin-bottom: 35px;
-    }
-
-    .contador-box{
-      background: rgba(255, 220, 230, 0.6);
-      border-radius: 12px;
-      padding: 25px 20px;
-      margin: 35px 0;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .contador-titulo{
-      font-family: Georgia, serif;
-      font-size: 28px;
-      color: #9c2752;
-      margin-bottom: 15px;
-    }
-
-    .contador-valor{
-      font-size: 17px;
-      color: #5c1a2b;
-      font-weight: 500;
-    }
-
-    .assinatura{
-      font-family: Georgia, serif;
-      font-size: 22px;
-      color: #5c1a2b;
-      text-align: center;
-      margin: 30px 0 25px;
+    /* responsivo */
+    @media (max-width:420px){
+      .env-base{ width:240px; height:160px; }
     }
   </style>
 </head>
 <body>
 
-<!-- ÁUDIO OCULTO, TAGS FECHADAS -->
-<audio id="musica" preload="auto" loop style="display: none;">
-  <source src="all_of_me.mp3" type="audio/mpeg">
-</audio>
+<div class="wrap">
 
+  <div class="headline">Para Lua da minha vida <span style="font-size:18px;margin-left:6px">🌙</span></div>
 
-<div class="tela-inicial" id="capa">
-  <div class="titulo-capa">Para Lua da minha vida 🌙</div>
-
-  <div class="envelope" id="envelope">
-    <div class="env-base">
-      <div class="env-flap"></div>
-      <div class="env-letter">
-        Para Lua<br>da minha vida
+  <div class="envelope-area">
+    <div class="envelope" id="envelope" aria-hidden="false" title="Toque para abrir">
+      <div class="env-base">
+        <div class="env-flap"></div>
+        <div class="env-seal"></div>
+        <div class="letter" id="letter"><!-- papel oculto — conteúdo será mostrado depois -->
+          <!-- opcional: deixar vazio aqui; a carta completa aparecerá abaixo após animação -->
+        </div>
       </div>
     </div>
   </div>
 
   <button class="btn-abrir" id="btnAbrir">Abrir</button>
-</div>
 
-<div class="pagina" id="carta">
-  <div class="titulo">Para Lua da minha vida <br>🌙</div>
+  <!-- Carta final (a sua página atual) — inicialmente oculta -->
+  <div class="pagina" id="carta">
+    <div class="titulo" style="font-family:Georgia,serif;font-size:32px;color:var(--text);margin-bottom:22px;text-align:center;">Para Lua da minha vida <br>🌙</div>
 
-  <div class="moldura">
-    <div class="fita"></div>
-    <div class="carrossel">
-      <img src="foto1.jpg" alt="Foto 1">
-      <img src="foto2.jpg" alt="Foto 2">
-      <img src="foto3.jpg" alt="Foto 3">
+    <div class="moldura" style="background:white;padding:12px;border-radius:6px;box-shadow:0 6px 16px rgba(0,0,0,0.12);margin-bottom:22px;position:relative;overflow:hidden;">
+      <div class="fita" style="position:absolute;top:-8px;right:-8px;width:70px;height:25px;background:#f3e8c6;transform:rotate(25deg);opacity:.9;"></div>
+      <div class="carrossel" style="display:flex;width:300%;animation:slide 12s infinite linear;">
+        <img src="foto1.jpg" alt="Foto 1" style="width:33.333%;object-fit:cover;border-radius:2px;">
+        <img src="foto2.jpg" alt="Foto 2" style="width:33.333%;object-fit:cover;border-radius:2px;">
+        <img src="foto3.jpg" alt="Foto 3" style="width:33.333%;object-fit:cover;border-radius:2px;">
+      </div>
     </div>
+
+    <div class="texto" style="font-size:18px;line-height:32px;color:var(--text);text-align:left;margin-bottom:28px;">
+      Quero demonstrar meu amor por você através deste simples gesto.<br><br>
+      Te amar tem sido a minha maior alegria. Fazer você feliz enche meu coração de felicidade, mas te ver chorar me destrói por dentro.<br><br>
+      Sua luta por nós é admirável, e eu reconheço todo o seu esforço, sua dedicação e tudo o que você faz por nós. Amo saber que sou amado por você.<br><br>
+      Obrigado por estar nessa batalha ao meu lado. Com você, tudo isso vale a pena.<br><br>
+      Eu te amo!
+    </div>
+
+    <div class="contador-box" style="background: rgba(255,220,230,0.6);border-radius:12px;padding:20px;text-align:center;margin-bottom:22px;">
+      <div class="contador-titulo" style="font-family:Georgia,serif;font-size:24px;color:#9c2752;margin-bottom:8px;">Juntos há:</div>
+      <div class="contador-valor" id="contador" style="font-size:16px;color:var(--text);font-weight:500;"></div>
+    </div>
+
+    <div class="assinatura" style="font-family:Georgia,serif;font-size:20px;color:var(--text);text-align:center;margin-top:8px;">Assinado: Seu Sol e Estrelas</div>
   </div>
 
-  <div class="texto">
-    Quero demonstrar meu amor por você através deste simples gesto.<br><br>
-    Te amar tem sido a minha maior alegria. Fazer você feliz enche meu coração de felicidade, mas te ver chorar me destrói por dentro.<br><br>
-    Sua luta por nós é admirável, e eu reconheço todo o seu esforço, sua dedicação e tudo o que você faz por nós. Amo saber que sou amado por você.<br><br>
-    Obrigado por estar nessa batalha ao meu lado. Com você, tudo isso vale a pena.<br><br>
-    Eu te amo!
-  </div>
-
-  <div class="contador-box">
-    <div class="contador-titulo">Juntos há:</div>
-    <div class="contador-valor" id="contador"></div>
-  </div>
-
-  <div class="assinatura">Assinado: Seu Sol e Estrelas</div>
 </div>
+
+<audio id="musica" preload="auto" loop>
+  <source src="all_of_me.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-const dataInicio = new Date(2016, 6, 25, 0, 0);
-const audio = document.getElementById('musica');
-const capa = document.getElementById('capa');
-const carta = document.getElementById('carta');
-const envelope = document.getElementById('envelope');
-const btnAbrir = document.getElementById('btnAbrir');
+  /* Lógica: ao clicar em botão OU envelope, animar (adicionar class open),
+     subir a folha suavemente e, após um pequeno delay, esconder capa e mostrar carta completa.
+     Reproduz o áudio com fade-in (é user-initiated por vir do clique). */
 
-function atualizarContador() {
-  const agora = new Date();
-  let diff = Math.floor((agora - dataInicio) / 1000);
-  const anos = Math.floor(diff / 31536000); diff %= 31536000;
-  const meses = Math.floor(diff / 2592000); diff %= 2592000;
-  const dias = Math.floor(diff / 86400); diff %= 86400;
-  const horas = Math.floor(diff / 3600); diff %= 3600;
-  const minutos = Math.floor(diff / 60);
-  const segundos = diff % 60;
-  document.getElementById('contador').innerHTML =
-    `${anos} anos, ${meses} meses, ${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos`;
-}
+  const envelope = document.getElementById('envelope');
+  const btn = document.getElementById('btnAbrir');
+  const carta = document.getElementById('carta');
+  const wrap = document.querySelector('.wrap');
+  const audio = document.getElementById('musica');
+  const letter = document.getElementById('letter');
 
-function fadeInAudio(duration = 3000) {
-  audio.volume = 0;
-  audio.play().catch(erro => console.log("Áudio:", erro));
-  const steps = 60;
-  const stepTime = duration / steps;
-  let currentStep = 0;
+  const dataInicio = new Date(2016, 6, 25, 0, 0);
+  function atualizarContador(){
+    const agora = new Date();
+    let diff = Math.floor((agora - dataInicio)/1000);
+    const anos = Math.floor(diff / 31536000); diff %= 31536000;
+    const meses = Math.floor(diff / 2592000); diff %= 2592000;
+    const dias = Math.floor(diff / 86400); diff %= 86400;
+    const horas = Math.floor(diff / 3600); diff %= 3600;
+    const minutos = Math.floor(diff / 60);
+    const segundos = diff % 60;
+    document.getElementById('contador').textContent =
+      `${anos} anos, ${meses} meses, ${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos`;
+  }
 
-  const fade = setInterval(() => {
-    currentStep++;
-    audio.volume = Math.min(currentStep / steps, 1);
-    if (currentStep >= steps) clearInterval(fade);
-  }, stepTime);
-}
+  let opened = false;
+  function fadeInAudio(duration = 3000){
+    try{
+      audio.volume = 0;
+      const p = audio.play();
+      if (p && p.catch) p.catch(()=>{}); // evitar console error caso bloqueie
+      const steps = 60;
+      const stepTime = Math.max(10, Math.floor(duration / steps));
+      let s = 0;
+      const iv = setInterval(()=>{
+        s++;
+        audio.volume = Math.min(s/steps, 1);
+        if(s>=steps) clearInterval(iv);
+      }, stepTime);
+    }catch(e){}
+  }
 
-function abrirCarta() {
-  envelope.classList.add('envelope-aberto');
-  fadeInAudio(3000);
+  function abrir(){
+    if(opened) return;
+    opened = true;
+    // anima envelope
+    envelope.classList.add('open');
 
-  setTimeout(() => {
-    capa.style.display = 'none';
-    carta.style.display = 'block';
-    atualizarContador();
-    setInterval(atualizarContador, 1000);
-  }, 800);
-}
+    // opcional: mostrar um conteúdo curto dentro da folha (se quiser)
+    // letter.innerHTML = '<strong>Para Lua da minha vida</strong>';
 
-btnAbrir.addEventListener('click', abrirCarta);
-envelope.addEventListener('click', abrirCarta);
+    // executar audio com fade
+    fadeInAudio(3500);
+
+    // após pequeno delay de abertura, esconder capa e mostrar carta completa
+    setTimeout(()=>{
+      // esconder área do envelope (mantemos apenas o título opcional)
+      const capa = document.querySelector('.envelope-area');
+      if(capa) capa.style.display = 'none';
+      if(btn) btn.style.display = 'none';
+
+      // mostrar carta completa
+      carta.style.display = 'block';
+      atualizarContador();
+      setInterval(atualizarContador, 1000);
+
+      // rolar para topo da carta (em telas pequenas)
+      window.scrollTo({top:0, behavior:'smooth'});
+    }, 700);
+  }
+
+  // ligar eventos: clique, toque
+  btn.addEventListener('click', abrir);
+  envelope.addEventListener('click', abrir);
+  // melhorar acessibilidade por teclado:
+  btn.addEventListener('keyup', (e)=>{ if(e.key === 'Enter' || e.key === ' ') abrir(); });
+
+  // também permitir abrir com scroll leve (opcional)
+  let scrolled = false;
+  function handleScrollOpen(){
+    if(scrolled) return;
+    scrolled = true;
+    abrir();
+    window.removeEventListener('wheel', handleScrollOpen);
+    window.removeEventListener('touchmove', handleScrollOpen);
+  }
+  window.addEventListener('wheel', handleScrollOpen, {passive:true});
+  window.addEventListener('touchmove', handleScrollOpen, {passive:true});
 </script>
-
-</body>
-</html>

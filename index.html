@@ -169,8 +169,8 @@ setInterval(atualizarContador, 1000);
 const audio = document.getElementById('musica');
 let tocando = false;
 
-function fadeInAudio(duration = 3000) {
-  audio.volume = 0;
+function fadeInAudio(duration = 2000) {
+  audio.volume = 20;
   audio.play().then(() => {
     const steps = 60;
     const stepTime = duration / steps;

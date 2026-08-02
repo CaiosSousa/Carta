@@ -112,9 +112,9 @@
     </style>
 </head>
 <body>
-    <!-- ÁUDIO OCULTO - Toca em segundo plano -->
+    <!-- ÁUDIO OCULTO, SEM PLAYER, EM SEGUNDO PLANO -->
     <audio id="musica" autoplay muted loop preload="auto" style="display: none;">
-        <source src="all_of_me.mp3" type="audio/mpeg">
+        <source src="all_of_me.mp3" type="audio/mpeg" />
     
 
     <div class="pagina">
@@ -148,7 +148,6 @@
     </div>
 
     <script>
-        // AJUSTE AQUI A DATA DE INÍCIO (mês começa em 0 = jan)
         const dataInicio = new Date(2016, 6, 10, 14, 0);
         function atualizarContador() {
             const agora = new Date();
@@ -165,7 +164,6 @@
         atualizarContador();
         setInterval(atualizarContador, 1000);
 
-        // Inicia a música com som real no primeiro toque/clique
         const audio = document.getElementById('musica');
         function iniciarSom() {
             audio.muted = false;

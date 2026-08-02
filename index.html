@@ -109,14 +109,10 @@
             text-align: center;
             margin: 30px 0 25px;
         }
+        audio { width: 100%; border-radius: 8px; }
     </style>
 </head>
 <body>
-    <!-- ÁUDIO OCULTO, SEM PLAYER, EM SEGUNDO PLANO -->
-    <audio id="musica" autoplay muted loop preload="auto" style="display: none;">
-        <source src="all_of_me.mp3" type="audio/mpeg">
-    
-
     <div class="pagina">
         <div class="titulo">Para Lua da minha vida <br>🌙</div>
 
@@ -124,7 +120,7 @@
             <div class="moldura">
                 <div class="fita"></div>
                 <div class="carrossel">
-                    <img src="foto1.jpg" alt="Foto 1">
+                    <img src="foto1.jog" alt="Foto 1">
                     <img src="foto2.jpg" alt="Foto 2">
                     <img src="foto3.jpg" alt="Foto 3">
                 </div>
@@ -132,7 +128,7 @@
         </div>
 
         <div class="texto">
-            Quero demonstrar meu amor por você através deste simples gesto.<br><br>
+            Queria demonstrar meu amor por você através deste simples gesto.<br><br>
             Te amar tem sido a minha maior alegria. Fazer você feliz enche meu coração de felicidade, mas te ver chorar me destrói por dentro.<br><br>
             Sua luta por nós é admirável, e eu reconheço todo o seu esforço, sua dedicação e tudo o que você faz por nós. Amo saber que sou amado por você.<br><br>
             Obrigado por estar nessa batalha ao meu lado. Com você, tudo isso vale a pena.<br><br>
@@ -145,6 +141,11 @@
         </div>
 
         <div class="assinatura">Assinado: Seu Sol e Estrelas</div>
+
+        <audio id="musica" controls autoplay muted loop>
+            <source src="all_of_me.mp3" type="audio/mpeg">
+            Seu navegador não suporta áudio.
+        
     </div>
 
     <script>
@@ -167,7 +168,7 @@
         const audio = document.getElementById('musica');
         function iniciarSom() {
             audio.muted = false;
-            audio.play().catch(() => {});
+            audio.play();
             document.removeEventListener('click', iniciarSom);
             document.removeEventListener('touchstart', iniciarSom);
         }

@@ -169,8 +169,8 @@ setInterval(atualizarContador, 1000);
 const audio = document.getElementById('musica');
 let tocando = false;
 
-function fadeInAudio(duration = 2000) {
-  audio.volume = 20;
+function fadeInAudio(duration = 3000) {
+  audio.volume = 0;
   audio.play().then(() => {
     const steps = 60;
     const stepTime = duration / steps;
@@ -188,12 +188,16 @@ function iniciarSom() {
   if (tocando) return;
   tocando = true;
   fadeInAudio(3000);
-  document.removeEventListener('click', iniciarSom);
-  document.removeEventListener('touchstart', iniciarSom);
+  window.removeEventListener('click', iniciarSom);
+  window.removeEventListener('scroll', iniciarSom);
+  window.removeEventListener('touchstart', iniciarSom);
+  window.removeEventListener('wheel', iniciarSom);
 }
 
-document.addEventListener('click', iniciarSom, { once: true });
-document.addEventListener('touchstart', iniciarSom, { once: true });
+window.addEventListener('click', iniciarSom, { once: true });
+window.addEventListener('scroll', iniciarSom, { once: true });
+window.addEventListener('touchstart', iniciarSom, { once: true });
+window.addEventListener('wheel', iniciarSom, { once: true });
 </script>
 
 </body>

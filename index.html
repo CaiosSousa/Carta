@@ -109,10 +109,14 @@
             text-align: center;
             margin: 30px 0 25px;
         }
-        audio { width: 100%; border-radius: 8px; }
     </style>
 </head>
 <body>
+    <!-- ÁUDIO OCULTO - Toca em segundo plano -->
+    <audio id="musica" autoplay muted loop preload="auto" style="display: none;">
+        <source src="all_of_me.mp3" type="audio/mpeg">
+    
+
     <div class="pagina">
         <div class="titulo">Para Lua da minha vida <br>🌙</div>
 
@@ -141,12 +145,6 @@
         </div>
 
         <div class="assinatura">Assinado: Seu Sol e Estrelas</div>
-
-        <!-- Adicionei autoplay, muted e o script para iniciar no primeiro toque -->
-        <audio id="musica" controls autoplay muted loop>
-            <source src="all_of_me.mp3" type="audio/mpeg">
-            Seu navegador não suporta áudio.
-        
     </div>
 
     <script>
@@ -171,7 +169,7 @@
         const audio = document.getElementById('musica');
         function iniciarSom() {
             audio.muted = false;
-            audio.play();
+            audio.play().catch(() => {});
             document.removeEventListener('click', iniciarSom);
             document.removeEventListener('touchstart', iniciarSom);
         }

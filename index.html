@@ -1,168 +1,182 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Para Lua da minha vida</title>
-<style>
-:root{
-  --bg1:#f7e8e3;
-  --bg2:#efe4ff;
-  --bg3:#e7f3f1;
-  --envelope1:#f2c6b4;
-  --envelope2:#d9a08f;
-  --flap1:#f7d8cb;
-  --flap2:#e4b4a4;
-  --text:#5b3f3f;
-  --shadow:rgba(90,60,70,.18);
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  min-height:100vh;
-  font-family:Arial,Helvetica,sans-serif;
-  background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-  color:var(--text);
-}
-.page{width:min(980px,100%);text-align:center}
-.title{
-  margin:0 0 22px;
-  font-size:clamp(2rem,5vw,3.6rem);
-  font-family:"Trebuchet MS","Segoe UI",sans-serif;
-  font-weight:700;
-  letter-spacing:.5px;
-  color:#6b4d57;
-}
-.subtitle{margin:0 0 28px;color:#7e6975;font-size:1rem}
-.scene{display:flex;justify-content:center;align-items:center;margin-bottom:26px}
-.envelopeWrap{width:min(760px,100%);aspect-ratio:1.6/1;position:relative;perspective:1200px}
-.envelope{
-  position:absolute;inset:0;
-  border-radius:28px;
-  background:linear-gradient(145deg,var(--envelope1),var(--envelope2));
-  box-shadow:0 25px 60px var(--shadow);
-  overflow:hidden;
-}
-.envelope::before,.envelope::after{
-  content:"";position:absolute;inset:0;
-}
-.envelope::before{
-  background:
-    linear-gradient(135deg,transparent 49.5%,rgba(255,255,255,.25) 50%,transparent 50.5%),
-    linear-gradient(225deg,transparent 49.5%,rgba(0,0,0,.08) 50%,transparent 50.5%);
-  opacity:.9;
-}
-.flap{
-  position:absolute;left:0;right:0;top:0;height:54%;
-  background:linear-gradient(180deg,var(--flap1),var(--flap2));
-  clip-path:polygon(0 0,100% 0,50% 72%);
-  transform-origin:top center;
-  transition:transform .9s cubic-bezier(.2,.8,.2,1);
-  z-index:3;
-  box-shadow:0 10px 20px rgba(0,0,0,.12);
-}
-.seal{
-  position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);
-  width:84px;height:84px;border-radius:50%;
-  background:radial-gradient(circle at 30% 30%,#ffd9de,#ff9eb1 55%,#e36f84 100%);
-  border:6px solid rgba(255,255,255,.35);
-  display:flex;align-items:center;justify-content:center;
-  color:#fff;font-size:2rem;font-weight:700;
-  box-shadow:0 12px 25px rgba(0,0,0,.14);
-  z-index:4;
-}
-.flap.open{transform:rotateX(180deg)}
-.envelope.open .seal{animation:pop .9s ease forwards}
-@keyframes pop{
-  0%{transform:translate(-50%,-50%) scale(1)}
-  35%{transform:translate(-50%,-50%) scale(1.12)}
-  100%{transform:translate(-50%,-50%) scale(.88);opacity:.75}
-}
-.envelopeBase{
-  position:absolute;inset:0;
-  background:linear-gradient(145deg,var(--envelope1),var(--envelope2));
-  clip-path:polygon(0 100%,50% 48%,100% 100%,100% 0,0 0);
-  z-index:2;
-}
-.frontLines{
-  position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:
-    linear-gradient(135deg,transparent 49.3%,rgba(0,0,0,.08) 49.7%,transparent 50.2%),
-    linear-gradient(225deg,transparent 49.3%,rgba(0,0,0,.08) 49.7%,transparent 50.2%);
-}
-.envelopeText{
-  position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
-  z-index:5;
-  width:90%;
-  font-family:"Georgia","Times New Roman",serif;
-  font-size:clamp(1.2rem,2.7vw,2.1rem);
-  color:#6a4a55;
-  text-shadow:0 1px 0 rgba(255,255,255,.45);
-  letter-spacing:.3px;
-}
-.actions{display:flex;justify-content:center}
-button{
-  border:0;
-  border-radius:999px;
-  padding:14px 28px;
-  font-size:1rem;
-  font-weight:700;
-  cursor:pointer;
-  color:#fff;
-  background:linear-gradient(135deg,#c97f90,#8d6bb3);
-  box-shadow:0 12px 26px rgba(109,82,123,.22);
-  transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease;
-}
-button:hover{transform:translateY(-1px);box-shadow:0 16px 30px rgba(109,82,123,.26)}
-button:active{transform:translateY(0)}
-button[disabled]{opacity:.7;cursor:default}
-.hint{margin-top:14px;color:#7e6975;font-size:.95rem}
-@media (max-width:640px){
-  .title{font-size:2rem}
-  .envelopeWrap{width:min(100%,560px)}
-  .envelopeText{font-size:1.05rem}
-  .seal{width:70px;height:70px;font-size:1.6rem}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Lua da minha vida 🌙</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #7a243a;
+            padding: 20px 0;
+            font-family: 'Segoe UI', serif;
+        }
+        .pagina {
+            max-width: 480px;
+            width: 92%;
+            margin: 0 auto;
+            background: #fffdf5;
+            background-image: linear-gradient(#e0e0e0 1px, transparent 1px);
+            background-size: 100% 32px;
+            padding: 40px 30px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+        .titulo {
+            font-family: 'Georgia', cursive;
+            font-size: 32px;
+            color: #5c1a2b;
+            margin-bottom: 35px;
+            line-height: 1.3;
+            text-align: center;
+        }
+        .container-fotos { position: relative; margin-bottom: 40px; }
+        .moldura {
+            background: white;
+            padding: 12px;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .fita {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 70px;
+            height: 25px;
+            background: #f3e8c6;
+            transform: rotate(25deg);
+            opacity: 0.9;
+            z-index: 10;
+        }
+        .carrossel {
+            display: flex;
+            width: 300%;
+            animation: slide 12s infinite linear;
+        }
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-66.666%); }
+        }
+        .carrossel img {
+            width: 33.333%;
+            height: auto;
+            border-radius: 2px;
+            object-fit: cover;
+        }
+        .texto {
+            font-size: 18px;
+            line-height: 32px;
+            color: #3a111c;
+            margin-bottom: 35px;
+            text-align: left;
+        }
+        .contador-box {
+            background: rgba(255, 220, 230, 0.6);
+            border-radius: 12px;
+            padding: 25px 20px;
+            margin: 35px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .contador-box::before {
+            content: "❤ ❤ ♡ ❤ ♡ ❤";
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 100%;
+            font-size: 20px;
+            color: rgba(255,150,180,0.2);
+            letter-spacing: 8px;
+        }
+        .contador-titulo {
+            font-family: 'Georgia', cursive;
+            font-size: 28px;
+            color: #9c2752;
+            margin-bottom: 15px;
+        }
+        .contador-valor {
+            font-size: 17px;
+            color: #5c1a2b;
+            font-weight: 500;
+        }
+        .assinatura {
+            font-family: 'Georgia', cursive;
+            font-size: 22px;
+            color: #5c1a2b;
+            text-align: center;
+            margin: 30px 0 25px;
+        }
+        audio { width: 100%; border-radius: 8px; }
+    </style>
 </head>
 <body>
-  <main class="page">
-    <h1 class="title">Para Lua da minha vida</h1>
+    <div class="pagina">
+        <div class="titulo">Para Lua da minha vida <br>🌙</div>
 
-
-    <div class="scene">
-      <div class="envelopeWrap" id="wrap">
-        <div class="envelope" id="envelope">
-          <div class="envelopeText"></div>
-          <div class="seal">❤</div>
-          <div class="flap" id="flap"></div>
-          <div class="envelopeBase"></div>
-          <div class="frontLines"></div>
+        <div class="container-fotos">
+            <div class="moldura">
+                <div class="fita"></div>
+                <div class="carrossel">
+                    <img src="https://drive.google.com/uc?export=view&id=13uqLJtihSQT6M_ClpegCR_4WjV82riDG" alt="Foto 1">
+                    <img src="https://drive.google.com/uc?export=view&id=13uhwBnXbbMKGJVYRQIvde0M9iwEmEHWL" alt="Foto 2">
+                    <img src="https://drive.google.com/uc?export=view&id=1W79z0FsnOdtOJpX10qgu2QBVZJBAzhD2" alt="Foto 3">
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div class="texto">
+            Queria demonstrar meu amor por você através deste simples gesto.<br><br>
+            Te amar tem sido a minha maior alegria. Fazer você feliz enche meu coração de felicidade, mas te ver chorar me destrói por dentro.<br><br>
+            Sua luta por nós é admirável, e eu reconheço todo o seu esforço, sua dedicação e tudo o que você faz por nós. Amo saber que sou amado por você.<br><br>
+            Obrigado por estar nessa batalha ao meu lado. Com você, tudo isso vale a pena.<br><br>
+            Eu te amo!
+        </div>
+
+        <div class="contador-box">
+            <div class="contador-titulo">Juntos há:</div>
+            <div class="contador-valor" id="contador"></div>
+        </div>
+
+        <div class="assinatura">Assinado: Seu Sol e Estrelas</div>
+
+        <!-- Adicionei autoplay, muted e o script para iniciar no primeiro toque -->
+        <audio id="musica" controls autoplay muted loop>
+            <source src="https://drive.google.com/uc?export=download&id=1yR3QRFH07O0lMPoMc5E2YZldU9fR80u4" type="audio/mpeg">
+            Seu navegador não suporta áudio.
+        
     </div>
 
-    <div class="actions">
-      <button id="openBtn" onclick="openEnvelope()">Abra</button>
-    </div>
-  </main>
+    <script>
+        // AJUSTE AQUI A DATA DE INÍCIO (mês começa em 0 = jan)
+        const dataInicio = new Date(2016, 6, 10, 14, 0);
+        function atualizarContador() {
+            const agora = new Date();
+            let diff = Math.floor((agora - dataInicio) / 1000);
+            const anos = Math.floor(diff / 31536000); diff %= 31536000;
+            const meses = Math.floor(diff / 2592000); diff %= 2592000;
+            const dias = Math.floor(diff / 86400); diff %= 86400;
+            const horas = Math.floor(diff / 3600); diff %= 3600;
+            const minutos = Math.floor(diff / 60);
+            const segundos = diff % 60;
+            document.getElementById('contador').innerHTML = 
+            `${anos} anos, ${meses} meses, ${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos`;
+        }
+        atualizarContador();
+        setInterval(atualizarContador, 1000);
 
-<script>
-function openEnvelope(){
-  const envelope = document.getElementById('envelope');
-  const flap = document.getElementById('flap');
-  const btn = document.getElementById('openBtn');
-  btn.disabled = true;
-  envelope.classList.add('open');
-  flap.classList.add('open');
-  setTimeout(() => {
-    window.location.href = 'projeto.html';
-  }, 1100);
-}
-</script>
+        // Inicia a música com som real no primeiro toque/clique
+        const audio = document.getElementById('musica');
+        function iniciarSom() {
+            audio.muted = false;
+            audio.play();
+            document.removeEventListener('click', iniciarSom);
+            document.removeEventListener('touchstart', iniciarSom);
+        }
+        document.addEventListener('click', iniciarSom);
+        document.addEventListener('touchstart', iniciarSom);
+    </script>
 </body>
 </html>
